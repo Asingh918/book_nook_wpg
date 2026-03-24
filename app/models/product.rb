@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
   belongs_to :category
+
   validates :title, presence: true
   validates :author, presence: true
   validates :description, presence: true
@@ -9,5 +10,13 @@ class Product < ApplicationRecord
 
   def price
     price_cents / 100.0
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["id", "title", "author", "description", "price_cents", "stock_qty", "active", "category_id", "created_at", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["category"]
   end
 end
