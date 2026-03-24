@@ -1,0 +1,9 @@
+<div style="border:1px solid #ddd; border-radius:8px; padding:16px; background:white; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+  <h3 style="margin:0 0 6px; color:#2d6a4f; font-size:16px;"><%= product.title %></h3>
+  <p style="margin:0 0 6px; color:#666; font-size:14px;">by <%= product.author %></p>
+  <p style="margin:0 0 10px; color:#333; font-size:13px;"><%= truncate(product.description, length: 100) %></p>
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <span style="font-size:18px; font-weight:bold; color:#2d6a4f;">$<%= sprintf('%.2f', product.price_cents / 100.0) %></span>
+    <%= link_to "View Details", product_path(product), style: "background:#2d6a4f; color:white; padding:6px 14px; border-radius:6px; text-decoration:none; font-size:14px;" %>
+  </div>
+</div>

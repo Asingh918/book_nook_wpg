@@ -1,0 +1,10 @@
+<%= link_to "← All Books", root_path, style: "color:#2d6a4f; text-decoration:none; font-size:14px;" %>
+
+<h1 style="color:#2d6a4f; margin:16px 0 8px;"><%= @category.name %></h1>
+<p style="color:#666; margin-bottom:24px;"><%= @category.description %></p>
+
+<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px;">
+  <% @products.each do |product| %>
+    <%= render 'products/product', product: product %>
+  <% end %>
+</div>

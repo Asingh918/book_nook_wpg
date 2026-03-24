@@ -1,0 +1,15 @@
+<h1 style="color:#2d6a4f; margin-bottom:8px;">Our Books</h1>
+<p style="color:#666; margin-bottom:24px;">Browse our collection of wonderful books</p>
+
+<div style="display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap;">
+  <%= link_to "All Books", root_path, style: "background:#2d6a4f; color:white; padding:6px 14px; border-radius:20px; text-decoration:none; font-size:14px;" %>
+  <% @categories.each do |category| %>
+    <%= link_to category.name, category_path(category), style: "background:#e8f5e9; color:#2d6a4f; padding:6px 14px; border-radius:20px; text-decoration:none; font-size:14px; border:1px solid #2d6a4f;" %>
+  <% end %>
+</div>
+
+<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px;">
+  <% @products.each do |product| %>
+    <%= render 'product', product: product %>
+  <% end %>
+</div>
