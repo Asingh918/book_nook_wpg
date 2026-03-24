@@ -4,12 +4,6 @@
   <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:32px;">
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
-      <% if alert %>
-        <div style="background:#f8d7da; color:#721c24; padding:12px 16px; border-radius:6px; margin-bottom:20px;">
-          <%= alert %>
-        </div>
-      <% end %>
-
       <div style="margin-bottom:16px;">
         <label style="display:block; color:#333; font-size:14px; margin-bottom:6px;">Email</label>
         <%= f.email_field :email, style: "width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box;" %>
@@ -20,7 +14,7 @@
         <%= f.password_field :password, style: "width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box;" %>
       </div>
 
-      <div style="margin-bottom:24px;">
+      <div style="margin-bottom:24px; display:flex; align-items:center; gap:8px;">
         <%= f.check_box :remember_me %>
         <label style="color:#666; font-size:14px;">Remember me</label>
       </div>
