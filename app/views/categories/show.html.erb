@@ -1,10 +1,21 @@
 <%= link_to "← All Books", root_path, style: "color:#2d6a4f; text-decoration:none; font-size:14px;" %>
 
-<h1 style="color:#2d6a4f; margin:16px 0 8px;"><%= @category.name %></h1>
-<p style="color:#666; margin-bottom:24px;"><%= @category.description %></p>
+<h1 style="color:#2d6a4f; margin:20px 0 6px;"><%= @category.name %></h1>
+<p style="color:#666; margin:0 0 28px;"><%= @category.description %></p>
 
-<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px;">
-  <% @products.each do |product| %>
-    <%= render 'products/product', product: product %>
+<div style="display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap;">
+  <%= link_to "All Books", root_path, style: "background:white; color:#2d6a4f; padding:7px 18px; border-radius:20px; text-decoration:none; font-size:14px; border:1px solid #2d6a4f;" %>
+  <% @categories.each do |category| %>
+    <%= link_to category.name, category_path(category), style: "background:#{category.id == @category.id ? '#2d6a4f' : 'white'}; color:#{category.id == @category.id ? 'white' : '#2d6a4f'}; padding:7px 18px; border-radius:20px; text-decoration:none; font-size:14px; border:1px solid #2d6a4f;" %>
   <% end %>
 </div>
+
+<% if @products.empty? %>
+  <p style="color:#666; font-size:15px;">No books in this category yet.</p>
+<% else %>
+  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:24px;">
+    <% @products.each do |product| %>
+      <%= render 'products/product', product: product %>
+    <% end %>
+  </div>
+<% end %>

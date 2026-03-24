@@ -1,26 +1,29 @@
-<div style="max-width:700px; margin:0 auto;">
-  <%= link_to "← Back to Books", root_path, style: "color:#2d6a4f; text-decoration:none; font-size:14px;" %>
+<%= link_to "← Back to Books", root_path, style: "color:#2d6a4f; text-decoration:none; font-size:14px;" %>
 
-  <div style="background:white; border:1px solid #ddd; border-radius:8px; padding:32px; margin-top:16px;">
-    <h1 style="color:#2d6a4f; margin:0 0 8px;"><%= @product.title %></h1>
-    <p style="color:#666; font-size:18px; margin:0 0 16px;">by <%= @product.author %></p>
-
-    <div style="display:flex; gap:16px; margin-bottom:16px;">
-      <span style="background:#e8f5e9; color:#2d6a4f; padding:4px 12px; border-radius:20px; font-size:13px;">
-        <%= @product.category.name %>
+<div style="background:white; border:1px solid #ddd; border-radius:10px; padding:36px; margin-top:20px; box-shadow:0 2px 6px rgba(0,0,0,0.06);">
+  <div style="display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
+    <span style="background:#e8f5e9; color:#2d6a4f; padding:4px 14px; border-radius:20px; font-size:13px;">
+      <%= @product.category.name %>
+    </span>
+    <% if @product.stock_qty > 0 %>
+      <span style="background:#d4edda; color:#155724; padding:4px 14px; border-radius:20px; font-size:13px;">
+        In Stock (<%= @product.stock_qty %> left)
       </span>
-      <% if @product.stock_qty > 0 %>
-        <span style="background:#d4edda; color:#155724; padding:4px 12px; border-radius:20px; font-size:13px;">In Stock (<%= @product.stock_qty %> left)</span>
-      <% else %>
-        <span style="background:#f8d7da; color:#721c24; padding:4px 12px; border-radius:20px; font-size:13px;">Out of Stock</span>
-      <% end %>
-    </div>
+    <% else %>
+      <span style="background:#f8d7da; color:#721c24; padding:4px 14px; border-radius:20px; font-size:13px;">
+        Out of Stock
+      </span>
+    <% end %>
+  </div>
 
-    <p style="color:#333; line-height:1.7; margin-bottom:24px;"><%= @product.description %></p>
+  <h1 style="color:#1a1a1a; margin:0 0 8px; font-size:26px;"><%= @product.title %></h1>
+  <p style="color:#666; font-size:17px; margin:0 0 20px;">by <%= @product.author %></p>
+  <p style="color:#333; line-height:1.8; font-size:15px; margin-bottom:32px;"><%= @product.description %></p>
 
-    <div style="display:flex; align-items:center; gap:16px;">
-      <span style="font-size:28px; font-weight:bold; color:#2d6a4f;">$<%= sprintf('%.2f', @product.price_cents / 100.0) %></span>
-      <%= link_to "Add to Cart", "#", style: "background:#2d6a4f; color:white; padding:10px 24px; border-radius:6px; text-decoration:none; font-size:16px;" %>
-    </div>
+  <div style="display:flex; align-items:center; gap:20px;">
+    <span style="font-size:30px; font-weight:bold; color:#2d6a4f;">
+      $<%= sprintf('%.2f', @product.price_cents / 100.0) %>
+    </span>
+    <%= link_to "🛒 Add to Cart", "#", style: "background:#2d6a4f; color:white; padding:12px 28px; border-radius:8px; text-decoration:none; font-size:16px;" %>
   </div>
 </div>
