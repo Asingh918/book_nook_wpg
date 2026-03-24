@@ -47,4 +47,4 @@ Product.create!([
     price_cents: 1799, stock_qty: 9, active: true, category: canadian }
 ])
 
-puts "Created #{Category.count} categories and #{Product.count} products!"
+puts "Created #{Category.count} categories and #{Product.count} products!"AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
