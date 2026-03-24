@@ -24,6 +24,8 @@
     <span style="font-size:30px; font-weight:bold; color:#2d6a4f;">
       $<%= sprintf('%.2f', @product.price_cents / 100.0) %>
     </span>
-    <%= link_to "🛒 Add to Cart", "#", style: "background:#2d6a4f; color:white; padding:12px 28px; border-radius:8px; text-decoration:none; font-size:16px;" %>
+    <%= button_to "🛒 Add to Cart", cart_add_path(product_id: @product.id),
+        method: :post,
+        style: "background:#2d6a4f; color:white; padding:12px 28px; border-radius:8px; border:none; font-size:16px; cursor:pointer;" %>
   </div>
 </div>
