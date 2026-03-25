@@ -14,7 +14,6 @@
           <p style="margin:0; color:#777; font-size:13px;">by <%= item[:product].author %></p>
           <p style="margin:4px 0 0; color:#2d6a4f; font-weight:bold;">$<%= sprintf('%.2f', item[:product].price_cents / 100.0) %> each</p>
         </div>
-
         <div style="display:flex; align-items:center; gap:12px;">
           <%= form_with url: cart_update_path, method: :patch, style: "display:flex; align-items:center; gap:8px;" do |f| %>
             <%= f.hidden_field :product_id, value: item[:product].id %>
@@ -22,12 +21,10 @@
                 style: "width:60px; padding:6px; border:1px solid #ddd; border-radius:6px; text-align:center; font-size:14px;" %>
             <%= f.submit "Update", style: "background:#f0f0f0; color:#333; padding:6px 12px; border:1px solid #ddd; border-radius:6px; cursor:pointer; font-size:13px;" %>
           <% end %>
-
           <%= button_to "Remove", cart_remove_path(product_id: item[:product].id),
               method: :delete,
               style: "background:#f8d7da; color:#721c24; padding:6px 12px; border:1px solid #f5c6cb; border-radius:6px; cursor:pointer; font-size:13px;" %>
         </div>
-
         <div style="min-width:80px; text-align:right;">
           <p style="margin:0; font-weight:bold; color:#2d6a4f; font-size:16px;">
             $<%= sprintf('%.2f', item[:product].price_cents * item[:quantity] / 100.0) %>
@@ -35,15 +32,13 @@
         </div>
       </div>
     <% end %>
-
     <div style="padding:20px 24px; background:#f9f9f9; display:flex; justify-content:space-between; align-items:center;">
-      <span style="font-size:18px; font-weight:bold; color:#1a1a1a;">Total</span>
+      <span style="font-size:18px; font-weight:bold;">Total</span>
       <span style="font-size:22px; font-weight:bold; color:#2d6a4f;">$<%= sprintf('%.2f', @total / 100.0) %></span>
     </div>
   </div>
-
   <div style="display:flex; justify-content:space-between; align-items:center;">
     <%= link_to "← Continue Shopping", root_path, style: "color:#2d6a4f; text-decoration:none; font-size:15px;" %>
-    <%= link_to "Proceed to Checkout →", "#", style: "background:#2d6a4f; color:white; padding:12px 28px; border-radius:8px; text-decoration:none; font-size:16px;" %>
+    <%= link_to "Proceed to Checkout →", checkout_path, style: "background:#2d6a4f; color:white; padding:12px 28px; border-radius:8px; text-decoration:none; font-size:16px;" %>
   </div>
 <% end %>
