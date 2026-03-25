@@ -1,0 +1,50 @@
+<h1 style="color:#2d6a4f; margin:0 0 24px;">My Orders</h1>
+
+<% if @orders.empty? %>
+  <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:40px; text-align:center;">
+    <p style="color:#666; font-size:16px; margin:0 0 16px;">You have no orders yet.</p>
+    <%= link_to "Browse Books", root_path, style: "background:#2d6a4f; color:white; padding:10px 24px; border-radius:6px; text-decoration:none;" %>
+  </div>
+<% else %>
+  <% @orders.each do |order| %>
+    <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:24px; margin-bottom:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h2 style="margin:0 0 4px; font-size:16px; color:#1a1a1a;">Order #<%= order.id %></h2>
+          <p style="margin:0; color:#777; font-size:13px;"><%= order.created_at.strftime("%B %d, %Y") %></p>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="background:<%= order.status == 'paid' ? '#d4edda' : order.status == 'shipped' ? '#cce5ff' : '#fff3cd' %>; color:<%= order.status == 'paid' ? '#155724' : order.status == 'shipped' ? '#004085' : '#856404' %>; padding:4px 14px; border-radius:20px; font-size:13px; text-transform:capitalize;">
+            <%= order.status %>
+          </span>
+          <span style="font-weight:bold; color:#2d6a4f; font-size:16px;">$<%= sprintf('%.2f', order.total_cents / 100.0) %></span>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid #f0f0f0; padding-top:16px;">
+        <% order.order_items.each do |item| %>
+          <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f9f9f9;">
+            <div>
+              <p style="margin:0; font-size:14px; color:#1a1a1a;"><%= item.product.title %></p>
+              <p style="margin:2px 0 0; font-size:12px; color:#777;">Qty: <%= item.quantity %> × $<%= sprintf('%.2f', item.unit_price_cents / 100.0) %></p>
+            </div>
+            <span style="font-size:14px; color:#333;">$<%= sprintf('%.2f', item.unit_price_cents * item.quantity / 100.0) %></span>
+          </div>
+        <% end %>
+
+        <div style="display:flex; justify-content:space-between; padding-top:12px; margin-top:4px;">
+          <span style="color:#666; font-size:13px;">Subtotal</span>
+          <span style="font-size:13px;">$<%= sprintf('%.2f', order.subtotal_cents / 100.0) %></span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding-top:4px;">
+          <span style="color:#666; font-size:13px;">Tax</span>
+          <span style="font-size:13px;">$<%= sprintf('%.2f', order.tax_cents / 100.0) %></span>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding-top:8px; border-top:1px solid #ddd; margin-top:8px;">
+          <strong style="font-size:14px;">Total</strong>
+          <strong style="font-size:14px; color:#2d6a4f;">$<%= sprintf('%.2f', order.total_cents / 100.0) %></strong>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
