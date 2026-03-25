@@ -11,14 +11,14 @@ class CheckoutController < ApplicationController
   def update_province
     @cart_items = get_cart_items
     @provinces  = Province.all.order(:name)
-    @province   = Province.find(params[:province_id])
+    @province   = Province.find_by(id: params[:province_id]) || Province.first
     calculate_totals(@province)
     render :new
   end
 
   def create
     @cart_items = get_cart_items
-    @province   = Province.find(params[:province_id])
+    @province   = Province.find_by(id: params[:province_id]) || Province.first
     calculate_totals(@province)
 
     order = Order.new(
@@ -62,7 +62,6 @@ class CheckoutController < ApplicationController
   end
 
   def calculate_totals(province)
-    return if province.nil?
     @subtotal = get_cart_items.sum { |i| i[:product].price_cents * i[:quantity] }
     tax_rate  = province.hst > 0 ? province.hst : (province.gst + province.pst)
     @tax      = (@subtotal * tax_rate).round
