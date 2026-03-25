@@ -4,7 +4,7 @@ class CheckoutController < ApplicationController
   def new
     @cart_items = get_cart_items
     @provinces  = Province.all.order(:name)
-    @province   = current_user.province || Province.find_by(code: 'MB')
+    @province   = Province.find_by(code: 'MB') || Province.first
     calculate_totals(@province)
   end
 
@@ -22,9 +22,9 @@ class CheckoutController < ApplicationController
     calculate_totals(@province)
 
     order = Order.new(
-      user:          current_user,
-      province:      @province,
-      status:        'pending',
+      user:           current_user,
+      province:       @province,
+      status:         'pending',
       subtotal_cents: @subtotal,
       tax_cents:      @tax,
       total_cents:    @total,
@@ -37,10 +37,10 @@ class CheckoutController < ApplicationController
       @cart_items.each do |item|
         tax_rate = @province.hst > 0 ? @province.hst : (@province.gst + @province.pst)
         order.order_items.create!(
-          product:         item[:product],
-          quantity:        item[:quantity],
+          product:          item[:product],
+          quantity:         item[:quantity],
           unit_price_cents: item[:product].price_cents,
-          tax_rate:        tax_rate
+          tax_rate:         tax_rate
         )
       end
       session[:cart] = {}
@@ -62,6 +62,7 @@ class CheckoutController < ApplicationController
   end
 
   def calculate_totals(province)
+    return if province.nil?
     @subtotal = get_cart_items.sum { |i| i[:product].price_cents * i[:quantity] }
     tax_rate  = province.hst > 0 ? province.hst : (province.gst + province.pst)
     @tax      = (@subtotal * tax_rate).round
