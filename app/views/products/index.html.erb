@@ -9,15 +9,12 @@
         value: @search_term,
         placeholder: "Search by title or description...",
         style: "flex:1; min-width:200px; padding:10px 14px; border:1px solid #ddd; border-radius:6px; font-size:14px;" %>
-
     <%= f.select :category_id,
         options_for_select([["All Categories", 0]] + @categories.map { |c| [c.name, c.id] }, @selected_category),
         {},
         { style: "padding:10px 14px; border:1px solid #ddd; border-radius:6px; font-size:14px;" } %>
-
     <%= f.submit "Search",
         style: "background:#2d6a4f; color:white; padding:10px 20px; border:none; border-radius:6px; font-size:14px; cursor:pointer;" %>
-
     <% if @search_term.present? || @selected_category > 0 %>
       <%= link_to "Clear", root_path,
           style: "background:#f0f0f0; color:#333; padding:10px 16px; border-radius:6px; text-decoration:none; font-size:14px;" %>
@@ -25,21 +22,27 @@
   </div>
 <% end %>
 
-<div style="display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap;">
+<div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
   <%= link_to "All Books", root_path,
-      style: "background:#{@selected_category == 0 && @search_term.blank? ? '#2d6a4f' : 'white'}; color:#{@selected_category == 0 && @search_term.blank? ? 'white' : '#2d6a4f'}; padding:7px 18px; border-radius:20px; text-decoration:none; font-size:14px; border:1px solid #2d6a4f;" %>
+      style: "background:#{@active_filter.blank? && @selected_category == 0 ? '#2d6a4f' : 'white'}; color:#{@active_filter.blank? && @selected_category == 0 ? 'white' : '#2d6a4f'}; padding:7px 18px; border-radius:20px; text-decoration:none; font-size:14px; border:1px solid #2d6a4f;" %>
   <% @categories.each do |category| %>
     <%= link_to category.name, root_path(category_id: category.id),
         style: "background:#{@selected_category == category.id ? '#2d6a4f' : 'white'}; color:#{@selected_category == category.id ? 'white' : '#2d6a4f'}; padding:7px 18px; border-radius:20px; text-decoration:none; font-size:14px; border:1px solid #2d6a4f;" %>
   <% end %>
 </div>
 
+<div style="display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap;">
+  <%= link_to "🏷️ On Sale", root_path(filter: 'on_sale'),
+      style: "background:#{@active_filter == 'on_sale' ? '#e63946' : 'white'}; color:#{@active_filter == 'on_sale' ? 'white' : '#e63946'}; padding:6px 16px; border-radius:20px; text-decoration:none; font-size:13px; border:1px solid #e63946;" %>
+  <%= link_to "✨ New Arrivals", root_path(filter: 'new'),
+      style: "background:#{@active_filter == 'new' ? '#f4a261' : 'white'}; color:#{@active_filter == 'new' ? 'white' : '#f4a261'}; padding:6px 16px; border-radius:20px; text-decoration:none; font-size:13px; border:1px solid #f4a261;" %>
+  <%= link_to "🔄 Recently Updated", root_path(filter: 'recently_updated'),
+      style: "background:#{@active_filter == 'recently_updated' ? '#457b9d' : 'white'}; color:#{@active_filter == 'recently_updated' ? 'white' : '#457b9d'}; padding:6px 16px; border-radius:20px; text-decoration:none; font-size:13px; border:1px solid #457b9d;" %>
+</div>
+
 <% if @search_term.present? %>
   <p style="color:#666; margin-bottom:16px; font-size:14px;">
-    Found <strong><%= @products.count %></strong> result(s) for "<strong><%= @search_term %></strong>"
-    <% if @selected_category > 0 %>
-      in <strong><%= @categories.find { |c| c.id == @selected_category }&.name %></strong>
-    <% end %>
+    Found <strong><%= @products.total_count %></strong> result(s) for "<strong><%= @search_term %></strong>"
   </p>
 <% end %>
 
