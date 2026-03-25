@@ -1,32 +1,44 @@
-<div style="max-width:600px; margin:0 auto; text-align:center; padding:40px 0;">
-  <div style="font-size:60px; margin-bottom:16px;">🎉</div>
-  <h1 style="color:#2d6a4f; margin:0 0 8px;">Order Confirmed!</h1>
-  <p style="color:#666; margin:0 0 32px;">Thank you for your order. Order #<%= @order.id %></p>
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="text-center py-4">
+      <div style="font-size:64px;">🎉</div>
+      <h1 style="color:#2d6a4f;" class="mt-2 mb-1">Order Confirmed!</h1>
+      <p class="text-muted">Thank you for your order. Order #<%= @order.id %></p>
+    </div>
 
-  <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:24px; text-align:left; margin-bottom:24px;">
-    <h2 style="color:#1a1a1a; font-size:16px; margin:0 0 16px;">Order Details</h2>
-    <% @order.order_items.each do |item| %>
-      <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f0f0f0;">
-        <div>
-          <p style="margin:0; font-size:14px;"><%= item.product.title %></p>
-          <p style="margin:2px 0 0; color:#777; font-size:12px;">Qty: <%= item.quantity %></p>
+    <div class="card mb-4">
+      <div class="card-header fw-bold">Order Details</div>
+      <div class="card-body p-0">
+        <% @order.order_items.each do |item| %>
+          <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+            <div>
+              <p class="mb-0 fw-bold"><%= item.product.title %></p>
+              <small class="text-muted">Qty: <%= item.quantity %></small>
+            </div>
+            <span>$<%= sprintf('%.2f', item.unit_price_cents * item.quantity / 100.0) %></span>
+          </div>
+        <% end %>
+        <div class="p-3">
+          <div class="d-flex justify-content-between text-muted mb-1">
+            <span>Subtotal</span>
+            <span>$<%= sprintf('%.2f', @order.subtotal_cents / 100.0) %></span>
+          </div>
+          <div class="d-flex justify-content-between text-muted mb-2">
+            <span>Tax</span>
+            <span>$<%= sprintf('%.2f', @order.tax_cents / 100.0) %></span>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between fw-bold fs-5">
+            <span>Total</span>
+            <span style="color:#2d6a4f;">$<%= sprintf('%.2f', @order.total_cents / 100.0) %></span>
+          </div>
         </div>
-        <span style="font-size:14px;">$<%= sprintf('%.2f', item.unit_price_cents * item.quantity / 100.0) %></span>
       </div>
-    <% end %>
-    <div style="display:flex; justify-content:space-between; padding-top:12px;">
-      <span style="color:#666;">Subtotal</span>
-      <span>$<%= sprintf('%.2f', @order.subtotal_cents / 100.0) %></span>
     </div>
-    <div style="display:flex; justify-content:space-between; padding-top:8px;">
-      <span style="color:#666;">Tax</span>
-      <span>$<%= sprintf('%.2f', @order.tax_cents / 100.0) %></span>
-    </div>
-    <div style="display:flex; justify-content:space-between; padding-top:12px; border-top:2px solid #2d6a4f; margin-top:8px;">
-      <strong>Total</strong>
-      <strong style="color:#2d6a4f;">$<%= sprintf('%.2f', @order.total_cents / 100.0) %></strong>
+
+    <div class="text-center">
+      <%= link_to "View My Orders", orders_path, class: "btn btn-outline-success me-2" %>
+      <%= link_to "Continue Shopping", root_path, class: "btn btn-success" %>
     </div>
   </div>
-
-  <%= link_to "Continue Shopping", root_path, style: "background:#2d6a4f; color:white; padding:12px 28px; border-radius:8px; text-decoration:none; font-size:16px;" %>
 </div>

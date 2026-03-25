@@ -1,28 +1,36 @@
-<div style="max-width:480px; margin:0 auto;">
-  <h1 style="color:#2d6a4f; margin-bottom:24px;">Login</h1>
-  <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:32px;">
-    <%= form_for(resource, as: resource_name, url: user_session_path) do |f| %>
-      <% if alert %>
-        <div style="background:#f8d7da; color:#721c24; padding:12px 16px; border-radius:6px; margin-bottom:20px;">
-          <%= alert %>
-        </div>
-      <% end %>
-      <div style="margin-bottom:16px;">
-        <label style="display:block; color:#333; font-size:14px; margin-bottom:6px;">Email</label>
-        <%= f.email_field :email, style: "width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box;" %>
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm mt-3">
+      <div class="card-body p-4">
+        <h2 style="color:#2d6a4f;" class="mb-4 text-center">Login</h2>
+
+        <%= form_for(resource, as: resource_name, url: user_session_path) do |f| %>
+          <% if alert %>
+            <div class="alert alert-danger"><%= alert %></div>
+          <% end %>
+
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <%= f.email_field :email, class: "form-control" %>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <%= f.password_field :password, class: "form-control" %>
+          </div>
+
+          <div class="mb-4 d-flex align-items-center gap-2">
+            <%= f.check_box :remember_me, class: "form-check-input" %>
+            <label class="text-muted">Remember me</label>
+          </div>
+
+          <%= f.submit "Login", class: "btn btn-success w-100 py-2" %>
+        <% end %>
+
+        <p class="text-center mt-3 text-muted">
+          Don't have an account? <%= link_to "Sign Up", new_user_registration_path, style: "color:#2d6a4f;" %>
+        </p>
       </div>
-      <div style="margin-bottom:16px;">
-        <label style="display:block; color:#333; font-size:14px; margin-bottom:6px;">Password</label>
-        <%= f.password_field :password, style: "width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box;" %>
-      </div>
-      <div style="margin-bottom:24px; display:flex; align-items:center; gap:8px;">
-        <%= f.check_box :remember_me %>
-        <label style="color:#666; font-size:14px;">Remember me</label>
-      </div>
-      <%= f.submit "Login", style: "width:100%; background:#2d6a4f; color:white; padding:12px; border:none; border-radius:6px; font-size:16px; cursor:pointer;" %>
-    <% end %>
-    <p style="text-align:center; margin-top:16px; color:#666; font-size:14px;">
-      Don't have an account? <%= link_to "Sign Up", new_user_registration_path, style: "color:#2d6a4f;" %>
-    </p>
+    </div>
   </div>
 </div>
