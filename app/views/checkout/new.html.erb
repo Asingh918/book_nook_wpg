@@ -26,7 +26,7 @@
         <div style="margin-bottom:8px;">
           <label style="display:block; color:#333; font-size:14px; margin-bottom:6px;">Province</label>
           <%= f.select :province_id,
-              options_from_collection_for_select(@provinces, :id, :name, @province.id),
+              options_from_collection_for_select(@provinces, :id, :name, @province&.id),
               {},
               { style: "width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box;",
                 onchange: "this.form.action='/checkout/province'; this.form.method='post'; this.form.submit();" } %>
@@ -35,7 +35,7 @@
     </div>
 
     <div>
-      <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:24px; position:sticky; top:20px;">
+      <div style="background:white; border:1px solid #ddd; border-radius:10px; padding:24px;">
         <h2 style="margin:0 0 20px; color:#1a1a1a; font-size:18px;">Order Summary</h2>
 
         <% @cart_items.each do |item| %>
@@ -44,33 +44,35 @@
               <p style="margin:0; font-size:14px; color:#1a1a1a;"><%= item[:product].title %></p>
               <p style="margin:2px 0 0; font-size:12px; color:#777;">Qty: <%= item[:quantity] %></p>
             </div>
-            <span style="font-size:14px; color:#333;">$<%= sprintf('%.2f', item[:product].price_cents * item[:quantity] / 100.0) %></span>
+            <span style="font-size:14px;">$<%= sprintf('%.2f', item[:product].price_cents * item[:quantity] / 100.0) %></span>
           </div>
         <% end %>
 
-        <div style="margin-top:16px;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+        <% if @subtotal %>
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px; margin-top:16px;">
             <span style="color:#666; font-size:14px;">Subtotal</span>
             <span style="font-size:14px;">$<%= sprintf('%.2f', @subtotal / 100.0) %></span>
           </div>
 
-          <% if @province.hst > 0 %>
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-              <span style="color:#666; font-size:14px;">HST (<%= (@province.hst * 100).round(1) %>%)</span>
-              <span style="font-size:14px;">$<%= sprintf('%.2f', @tax / 100.0) %></span>
-            </div>
-          <% else %>
-            <% if @province.gst > 0 %>
+          <% if @province %>
+            <% if @province.hst > 0 %>
               <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                <span style="color:#666; font-size:14px;">GST (<%= (@province.gst * 100).round(1) %>%)</span>
-                <span style="font-size:14px;">$<%= sprintf('%.2f', (@subtotal * @province.gst).round / 100.0) %></span>
+                <span style="color:#666; font-size:14px;">HST (<%= (@province.hst * 100).round(1) %>%)</span>
+                <span style="font-size:14px;">$<%= sprintf('%.2f', @tax / 100.0) %></span>
               </div>
-            <% end %>
-            <% if @province.pst > 0 %>
-              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                <span style="color:#666; font-size:14px;">PST (<%= (@province.pst * 100).round(1) %>%)</span>
-                <span style="font-size:14px;">$<%= sprintf('%.2f', (@subtotal * @province.pst).round / 100.0) %></span>
-              </div>
+            <% else %>
+              <% if @province.gst > 0 %>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                  <span style="color:#666; font-size:14px;">GST (<%= (@province.gst * 100).round(1) %>%)</span>
+                  <span style="font-size:14px;">$<%= sprintf('%.2f', (@subtotal * @province.gst).round / 100.0) %></span>
+                </div>
+              <% end %>
+              <% if @province.pst > 0 %>
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                  <span style="color:#666; font-size:14px;">PST (<%= (@province.pst * 100).round(1) %>%)</span>
+                  <span style="font-size:14px;">$<%= sprintf('%.2f', (@subtotal * @province.pst).round / 100.0) %></span>
+                </div>
+              <% end %>
             <% end %>
           <% end %>
 
@@ -78,10 +80,11 @@
             <span style="font-weight:bold; font-size:16px;">Total</span>
             <span style="font-weight:bold; font-size:18px; color:#2d6a4f;">$<%= sprintf('%.2f', @total / 100.0) %></span>
           </div>
-        </div>
+        <% end %>
 
         <%= f.submit "Place Order →", style: "width:100%; background:#2d6a4f; color:white; padding:14px; border:none; border-radius:8px; font-size:16px; cursor:pointer; margin-top:20px;" %>
       </div>
     </div>
+
   </div>
 <% end %>
