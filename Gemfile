@@ -35,3 +35,5 @@ group :test do
   gem "selenium-webdriver"
 end
 gem 'kaminari'
+gem 'bootstrap', '~> 5.3'
+gem 'jquery-rails'

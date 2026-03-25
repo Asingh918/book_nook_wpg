@@ -1,64 +1,68 @@
-<div style="margin-bottom:32px;">
-  <h1 style="color:#2d6a4f; margin:0 0 6px;">Welcome to Book Nook WPG</h1>
-  <p style="color:#666; margin:0;">Winnipeg's favourite independent bookstore — now online!</p>
+<div class="mb-4">
+  <h1 style="color:#2d6a4f;" class="mb-1">Welcome to Book Nook WPG</h1>
+  <p class="text-muted">Winnipeg's favourite independent bookstore — now online!</p>
 </div>
 
-<%= form_with url: root_path, method: :get, style: "margin-bottom:24px;" do |f| %>
-  <div style="display:flex; gap:10px; flex-wrap:wrap;">
-    <%= f.text_field :search,
-        value: @search_term,
-        placeholder: "Search by title or description...",
-        style: "flex:1; min-width:200px; padding:10px 14px; border:1px solid #ddd; border-radius:6px; font-size:14px;" %>
-    <%= f.select :category_id,
-        options_for_select([["All Categories", 0]] + @categories.map { |c| [c.name, c.id] }, @selected_category),
-        {},
-        { style: "padding:10px 14px; border:1px solid #ddd; border-radius:6px; font-size:14px;" } %>
-    <%= f.submit "Search",
-        style: "background:#2d6a4f; color:white; padding:10px 20px; border:none; border-radius:6px; font-size:14px; cursor:pointer;" %>
-    <% if @search_term.present? || @selected_category > 0 %>
-      <%= link_to "Clear", root_path,
-          style: "background:#f0f0f0; color:#333; padding:10px 16px; border-radius:6px; text-decoration:none; font-size:14px;" %>
-    <% end %>
+<%= form_with url: root_path, method: :get, class: "mb-4" do |f| %>
+  <div class="row g-2">
+    <div class="col-md-6">
+      <%= f.text_field :search, value: @search_term,
+          placeholder: "Search by title or description...",
+          class: "form-control" %>
+    </div>
+    <div class="col-md-3">
+      <%= f.select :category_id,
+          options_for_select([["All Categories", 0]] + @categories.map { |c| [c.name, c.id] }, @selected_category),
+          {}, { class: "form-select" } %>
+    </div>
+    <div class="col-md-auto">
+      <%= f.submit "Search", class: "btn btn-success" %>
+      <% if @search_term.present? || @selected_category > 0 %>
+        <%= link_to "Clear", root_path, class: "btn btn-outline-secondary" %>
+      <% end %>
+    </div>
   </div>
 <% end %>
 
-<div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+<div class="d-flex gap-2 mb-3 flex-wrap">
   <%= link_to "All Books", root_path,
-      style: "background:#{@active_filter.blank? && @selected_category == 0 ? '#2d6a4f' : 'white'}; color:#{@active_filter.blank? && @selected_category == 0 ? 'white' : '#2d6a4f'}; padding:7px 18px; border-radius:20px; text-decoration:none; font-size:14px; border:1px solid #2d6a4f;" %>
+      class: "btn btn-sm #{@active_filter.blank? && @selected_category == 0 ? 'btn-success' : 'btn-outline-success'}" %>
   <% @categories.each do |category| %>
     <%= link_to category.name, root_path(category_id: category.id),
-        style: "background:#{@selected_category == category.id ? '#2d6a4f' : 'white'}; color:#{@selected_category == category.id ? 'white' : '#2d6a4f'}; padding:7px 18px; border-radius:20px; text-decoration:none; font-size:14px; border:1px solid #2d6a4f;" %>
+        class: "btn btn-sm #{@selected_category == category.id ? 'btn-success' : 'btn-outline-success'}" %>
   <% end %>
 </div>
 
-<div style="display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap;">
+<div class="d-flex gap-2 mb-4 flex-wrap">
   <%= link_to "🏷️ On Sale", root_path(filter: 'on_sale'),
-      style: "background:#{@active_filter == 'on_sale' ? '#e63946' : 'white'}; color:#{@active_filter == 'on_sale' ? 'white' : '#e63946'}; padding:6px 16px; border-radius:20px; text-decoration:none; font-size:13px; border:1px solid #e63946;" %>
+      class: "btn btn-sm #{@active_filter == 'on_sale' ? 'btn-danger' : 'btn-outline-danger'}" %>
   <%= link_to "✨ New Arrivals", root_path(filter: 'new'),
-      style: "background:#{@active_filter == 'new' ? '#f4a261' : 'white'}; color:#{@active_filter == 'new' ? 'white' : '#f4a261'}; padding:6px 16px; border-radius:20px; text-decoration:none; font-size:13px; border:1px solid #f4a261;" %>
+      class: "btn btn-sm #{@active_filter == 'new' ? 'btn-warning' : 'btn-outline-warning'}" %>
   <%= link_to "🔄 Recently Updated", root_path(filter: 'recently_updated'),
-      style: "background:#{@active_filter == 'recently_updated' ? '#457b9d' : 'white'}; color:#{@active_filter == 'recently_updated' ? 'white' : '#457b9d'}; padding:6px 16px; border-radius:20px; text-decoration:none; font-size:13px; border:1px solid #457b9d;" %>
+      class: "btn btn-sm #{@active_filter == 'recently_updated' ? 'btn-info' : 'btn-outline-info'}" %>
 </div>
 
 <% if @search_term.present? %>
-  <p style="color:#666; margin-bottom:16px; font-size:14px;">
+  <p class="text-muted mb-3">
     Found <strong><%= @products.total_count %></strong> result(s) for "<strong><%= @search_term %></strong>"
   </p>
 <% end %>
 
 <% if @products.empty? %>
-  <div style="text-align:center; padding:60px; background:white; border-radius:10px; border:1px solid #ddd;">
-    <p style="color:#666; font-size:16px; margin:0 0 12px;">No books found.</p>
-    <%= link_to "Browse all books", root_path, style: "color:#2d6a4f;" %>
+  <div class="text-center py-5 bg-white rounded border">
+    <p class="text-muted mb-3">No books found.</p>
+    <%= link_to "Browse all books", root_path, class: "btn btn-success" %>
   </div>
 <% else %>
-  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:24px;">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     <% @products.each do |product| %>
-      <%= render 'product', product: product %>
+      <div class="col">
+        <%= render 'product', product: product %>
+      </div>
     <% end %>
   </div>
 <% end %>
 
-<div style="display:flex; justify-content:center; margin-top:32px; gap:8px;">
+<div class="d-flex justify-content-center mt-4">
   <%= paginate @products %>
 </div>
