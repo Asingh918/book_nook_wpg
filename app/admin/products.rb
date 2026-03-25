@@ -1,6 +1,13 @@
 ActiveAdmin.register Product do
   permit_params :title, :author, :description, :price_cents, :stock_qty, :active, :category_id, :image
 
+  filter :title
+  filter :author
+  filter :category
+  filter :active
+  filter :price_cents
+  filter :stock_qty
+
   index do
     selectable_column
     id_column
