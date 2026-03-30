@@ -1,12 +1,10 @@
 ActiveAdmin.register Product do
-  permit_params :title, :author, :description, :price_cents, :stock_qty, :active, :category_id, :image
+  permit_params :title, :author, :description, :price_cents, :stock_qty, :active, :on_sale, :category_id, :image
 
   filter :title
   filter :author
   filter :category
   filter :active
-  filter :price_cents
-  filter :stock_qty
 
   index do
     selectable_column
@@ -17,13 +15,7 @@ ActiveAdmin.register Product do
     column :price_cents
     column :stock_qty
     column :active
-    column :image do |product|
-      if product.image.attached?
-        image_tag url_for(product.image), style: "height:50px; width:auto;"
-      else
-        "No image"
-      end
-    end
+    column :on_sale
     actions
   end
 
@@ -32,9 +24,10 @@ ActiveAdmin.register Product do
       f.input :title
       f.input :author
       f.input :description
-      f.input :price_cents
+      f.input :price_cents, hint: "e.g. 1499 = $14.99"
       f.input :stock_qty
       f.input :active
+      f.input :on_sale
       f.input :category
       f.input :image, as: :file
     end
@@ -49,14 +42,8 @@ ActiveAdmin.register Product do
       row :price_cents
       row :stock_qty
       row :active
+      row :on_sale
       row :category
-      row :image do |product|
-        if product.image.attached?
-          image_tag url_for(product.image), style: "max-height:200px; width:auto;"
-        else
-          "No image"
-        end
-      end
     end
   end
 end
