@@ -1,13 +1,21 @@
 <div class="book-card">
   <% if product.image.attached? %>
-    <%= image_tag product.image, class: "book-image" %>
+    <%= image_tag product.thumbnail, class: "book-image" %>
   <% else %>
     <div class="book-placeholder">📚</div>
   <% end %>
 
   <div class="book-card-body">
-    <span class="category-badge mb-2 d-inline-block"><%= product.category.name %></span>
-    <h5 class="fw-bold mb-1" style="color:#1a1a1a;"><%= product.title %></h5>
+    <div class="d-flex gap-2 flex-wrap mb-2">
+      <span class="category-badge"><%= product.category.name %></span>
+      <% if product.on_sale? %>
+        <span class="badge bg-danger" style="font-size:11px;">🏷️ ON SALE</span>
+      <% end %>
+      <% if product.created_at >= 3.days.ago %>
+        <span class="badge bg-warning text-dark" style="font-size:11px;">✨ NEW</span>
+      <% end %>
+    </div>
+    <h5 class="fw-bold mb-1" style="color:#1a1a1a; font-size:15px;"><%= product.title %></h5>
     <p class="text-muted mb-2" style="font-size:13px;">by <%= product.author %></p>
     <p class="text-secondary mb-0" style="font-size:13px; line-height:1.5;">
       <%= truncate(product.description, length: 120) %>

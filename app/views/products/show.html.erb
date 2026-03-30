@@ -4,39 +4,35 @@
   { name: @product.title, path: product_path(@product) }
 ) %>
 
-<div class="card" style="overflow:hidden; margin-top:8px;">
+<div class="card overflow-hidden mt-2">
   <% if @product.image.attached? %>
-    <%= image_tag @product.image, style: "width:100%; max-height:400px; object-fit:cover;" %>
+    <%= image_tag @product.large_image, style: "width:100%; max-height:400px; object-fit:cover;" %>
   <% else %>
-    <div style="width:100%; height:200px; background:#e8f5e9; display:flex; align-items:center; justify-content:center;">
-      <span style="font-size:72px;">📚</span>
-    </div>
+    <div style="width:100%; height:200px; background:#e8f5e9; display:flex; align-items:center; justify-content:center; font-size:72px;">📚</div>
   <% end %>
 
-  <div style="padding:32px;">
-    <div style="display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
-      <span class="badge badge-primary"><%= @product.category.name %></span>
+  <div class="p-4">
+    <div class="d-flex gap-2 mb-3 flex-wrap">
+      <span class="category-badge"><%= @product.category.name %></span>
       <% if @product.on_sale? %>
-        <span class="badge badge-danger">🏷️ On Sale</span>
+        <span class="badge bg-danger">🏷️ On Sale</span>
       <% end %>
       <% if @product.stock_qty > 0 %>
-        <span class="badge badge-success">In Stock (<%= @product.stock_qty %> left)</span>
+        <span class="badge bg-success">In Stock (<%= @product.stock_qty %> left)</span>
       <% else %>
-        <span class="badge badge-danger">Out of Stock</span>
+        <span class="badge bg-danger">Out of Stock</span>
       <% end %>
     </div>
 
-    <h1 style="color:#1a1a1a; margin:0 0 8px; font-size:26px;"><%= @product.title %></h1>
-    <p style="color:#666; font-size:17px; margin:0 0 20px;">by <%= @product.author %></p>
-    <p style="color:#333; line-height:1.8; font-size:15px; margin-bottom:32px;"><%= @product.description %></p>
+    <h1 style="color:#1a1a1a;" class="mb-1 fs-3"><%= @product.title %></h1>
+    <p class="text-muted fs-5 mb-3">by <%= @product.author %></p>
+    <p style="line-height:1.8;" class="mb-4"><%= @product.description %></p>
 
-    <div style="display:flex; align-items:center; gap:20px;">
-      <span style="font-size:30px; font-weight:bold; color:#2d6a4f;">
-        $<%= sprintf('%.2f', @product.price_cents / 100.0) %>
-      </span>
+    <div class="d-flex align-items-center gap-3">
+      <span class="price-tag fs-2">$<%= sprintf('%.2f', @product.price_cents / 100.0) %></span>
       <%= button_to "🛒 Add to Cart", cart_add_path(product_id: @product.id),
           method: :post,
-          style: "background:#2d6a4f; color:white; padding:12px 28px; border-radius:8px; border:none; font-size:16px; cursor:pointer;" %>
+          class: "btn btn-success btn-lg" %>
     </div>
   </div>
 </div>

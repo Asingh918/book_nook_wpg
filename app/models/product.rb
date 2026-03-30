@@ -13,8 +13,16 @@ class Product < ApplicationRecord
     price_cents / 100.0
   end
 
+  def thumbnail
+    image.variant(resize_to_fill: [300, 200]).processed
+  end
+
+  def large_image
+    image.variant(resize_to_fill: [800, 400]).processed
+  end
+
   def self.ransackable_attributes(auth_object = nil)
-    ["id", "title", "author", "description", "price_cents", "stock_qty", "active", "category_id", "created_at", "updated_at"]
+    ["id", "title", "author", "description", "price_cents", "stock_qty", "active", "on_sale", "category_id", "created_at", "updated_at"]
   end
 
   def self.ransackable_associations(auth_object = nil)
