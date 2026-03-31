@@ -1,0 +1,12 @@
+<%= breadcrumbs(
+  { name: "Home", path: root_path },
+  { name: "Contact Us", path: contact_path }
+) %>
+<div class="row justify-content-center mt-3">
+  <div class="col-lg-8">
+    <div class="card p-4">
+      <h1 style="color:#2d6a4f;" class="mb-4"><%= @page.title %></h1>
+      <p style="line-height:1.8; font-size:16px;"><%= @page.content %></p>
+    </div>
+  </div>
+</div>
