@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <h1 style="color:#2d6a4f;" class="mb-4">My Account</h1>
+
+    <div class="card p-4 mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0">Profile & Address</h5>
+        <%= link_to "Edit Address", edit_account_path, class: "btn btn-outline-success btn-sm" %>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <p class="text-muted mb-1" style="font-size:13px;">Name</p>
+          <p class="fw-bold mb-0"><%= current_user.full_name %></p>
+        </div>
+        <div class="col-md-6">
+          <p class="text-muted mb-1" style="font-size:13px;">Email</p>
+          <p class="fw-bold mb-0"><%= current_user.email %></p>
+        </div>
+        <div class="col-md-6">
+          <p class="text-muted mb-1" style="font-size:13px;">Street</p>
+          <p class="fw-bold mb-0"><%= current_user.street.present? ? current_user.street : "Not set" %></p>
+        </div>
+        <div class="col-md-6">
+          <p class="text-muted mb-1" style="font-size:13px;">City</p>
+          <p class="fw-bold mb-0"><%= current_user.city.present? ? current_user.city : "Not set" %></p>
+        </div>
+        <div class="col-md-6">
+          <p class="text-muted mb-1" style="font-size:13px;">Postal Code</p>
+          <p class="fw-bold mb-0"><%= current_user.postal_code.present? ? current_user.postal_code : "Not set" %></p>
+        </div>
+        <div class="col-md-6">
+          <p class="text-muted mb-1" style="font-size:13px;">Province</p>
+          <p class="fw-bold mb-0"><%= current_user.province.present? ? current_user.province.name : "Not set" %></p>
+        </div>
+      </div>
+    </div>
+
+    <%= link_to "My Orders", orders_path, class: "btn btn-success" %>
+  </div>
+</div>

@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   resources :categories, only: [:show]
   resources :orders,     only: [:index]
 
+  get    '/account',      to: 'account#show',   as: 'account'
+  get    '/account/edit', to: 'account#edit',   as: 'edit_account'
+  patch  '/account',      to: 'account#update', as: 'update_account'
+
   get '/about',   to: 'pages#about',   as: 'about'
   get '/contact', to: 'pages#contact', as: 'contact'
 
