@@ -22,6 +22,9 @@
       <% else %>
         <span class="badge bg-danger">Out of Stock</span>
       <% end %>
+      <% @product.tags.each do |tag| %>
+        <span class="badge bg-secondary"><%= tag.name %></span>
+      <% end %>
     </div>
 
     <h1 style="color:#1a1a1a;" class="mb-1 fs-3"><%= @product.title %></h1>
