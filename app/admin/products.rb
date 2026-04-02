@@ -1,10 +1,11 @@
 ActiveAdmin.register Product do
-  permit_params :title, :author, :description, :price_cents, :stock_qty, :active, :on_sale, :category_id, :image
+  permit_params :title, :author, :description, :price_cents, :stock_qty, :active, :on_sale, :category_id, :image, tag_ids: []
 
   filter :title
   filter :author
   filter :category
   filter :active
+  filter :on_sale
 
   index do
     selectable_column
@@ -16,6 +17,9 @@ ActiveAdmin.register Product do
     column :stock_qty
     column :active
     column :on_sale
+    column :tags do |product|
+      product.tags.map(&:name).join(", ")
+    end
     actions
   end
 
@@ -29,6 +33,7 @@ ActiveAdmin.register Product do
       f.input :active
       f.input :on_sale
       f.input :category
+      f.input :tags, as: :check_boxes, collection: Tag.all
       f.input :image, as: :file
     end
     f.actions
@@ -44,6 +49,9 @@ ActiveAdmin.register Product do
       row :active
       row :on_sale
       row :category
+      row :tags do |product|
+        product.tags.map(&:name).join(", ")
+      end
     end
   end
 end
