@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_02_205843) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_02_211643) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -117,6 +117,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_02_205843) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "product_tags", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_tags_on_product_id"
+    t.index ["tag_id"], name: "index_product_tags_on_tag_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "title"
     t.string "author"
@@ -137,6 +146,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_02_205843) do
     t.decimal "gst"
     t.decimal "pst"
     t.decimal "hst"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -165,6 +180,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_02_205843) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
+  add_foreign_key "product_tags", "products"
+  add_foreign_key "product_tags", "tags"
   add_foreign_key "products", "categories"
   add_foreign_key "users", "provinces"
 end
