@@ -4,7 +4,7 @@ class CheckoutController < ApplicationController
   def new
     @cart_items = get_cart_items
     @provinces  = Province.all.order(:name)
-    @province   = Province.find_by(code: 'MB') || Province.first
+    @province   = current_user.province || Province.find_by(code: 'MB') || Province.first
     calculate_totals(@province)
   end
 
@@ -62,6 +62,7 @@ class CheckoutController < ApplicationController
   end
 
   def calculate_totals(province)
+    return if province.nil?
     @subtotal = get_cart_items.sum { |i| i[:product].price_cents * i[:quantity] }
     tax_rate  = province.hst > 0 ? province.hst : (province.gst + province.pst)
     @tax      = (@subtotal * tax_rate).round
