@@ -33,7 +33,7 @@ ActiveAdmin.register Product do
       f.input :active
       f.input :on_sale
       f.input :category
-      f.input :tags, as: :check_boxes, collection: Tag.all
+      f.input :tag_ids, as: :check_boxes, collection: Tag.all, label: "Tags"
       f.input :image, as: :file
     end
     f.actions
