@@ -12,14 +12,14 @@ class User < ApplicationRecord
   end
 
   def admin?
-    role == 'admin'
+    role == "admin"
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["id", "email", "first_name", "last_name", "role", "created_at", "updated_at"]
+    [ "id", "email", "first_name", "last_name", "role", "created_at", "updated_at" ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["province"]
+    [ "province" ]
   end
 end

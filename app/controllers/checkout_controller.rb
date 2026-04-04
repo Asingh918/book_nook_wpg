@@ -4,7 +4,7 @@ class CheckoutController < ApplicationController
   def new
     @cart_items = get_cart_items
     @provinces  = Province.all.order(:name)
-    @province   = current_user.province || Province.find_by(code: 'MB') || Province.first
+    @province   = current_user.province || Province.find_by(code: "MB") || Province.first
     calculate_totals(@province)
   end
 
@@ -24,7 +24,7 @@ class CheckoutController < ApplicationController
     order = Order.new(
       user:           current_user,
       province:       @province,
-      status:         'pending',
+      status:         "pending",
       subtotal_cents: @subtotal,
       tax_cents:      @tax,
       total_cents:    @total,

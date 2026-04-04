@@ -34,6 +34,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-gem 'kaminari'
-gem 'bootstrap', '~> 5.3'
-gem 'jquery-rails'
+gem "kaminari"
+gem "bootstrap", "~> 5.3"
+gem "jquery-rails"

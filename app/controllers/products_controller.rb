@@ -16,12 +16,12 @@ class ProductsController < ApplicationController
     end
 
     case params[:filter]
-    when 'on_sale'
+    when "on_sale"
       @products = @products.where(on_sale: true)
-    when 'new'
+    when "new"
       # Shows books created in last 3 days
       @products = @products.where("created_at >= ?", 3.days.ago)
-    when 'recently_updated'
+    when "recently_updated"
       # Shows books updated in last 3 days but NOT new ones
       @products = @products.where(
         "updated_at >= ? AND created_at < ?",
