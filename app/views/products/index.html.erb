@@ -1,6 +1,18 @@
-<div class="mb-4">
-  <h1 style="color:#2d6a4f;" class="mb-1">Welcome to Book Nook WPG</h1>
-  <p class="text-muted">Winnipeg's favourite independent bookstore — now online!</p>
+<div style="background:linear-gradient(135deg, #2d6a4f, #1a3d2e); border-radius:12px; padding:40px; margin-bottom:32px; color:white;">
+  <div class="row align-items-center">
+    <div class="col-md-8">
+      <h1 style="font-size:32px; font-weight:700; margin-bottom:8px;">Welcome to Book Nook WPG 📚</h1>
+      <p style="font-size:16px; opacity:0.9; margin-bottom:20px;">Winnipeg's favourite independent bookstore — now online! Discover amazing books from Canadian and international authors.</p>
+      <div class="d-flex gap-3 flex-wrap">
+        <span style="background:rgba(255,255,255,0.2); padding:6px 16px; border-radius:20px; font-size:13px;">📦 <%= Product.count %>+ Books</span>
+        <span style="background:rgba(255,255,255,0.2); padding:6px 16px; border-radius:20px; font-size:13px;">🏷️ <%= Category.count %> Categories</span>
+        <span style="background:rgba(255,255,255,0.2); padding:6px 16px; border-radius:20px; font-size:13px;">🚚 Ships Across Canada</span>
+      </div>
+    </div>
+    <div class="col-md-4 text-center d-none d-md-block">
+      <div style="font-size:100px;">📚</div>
+    </div>
+  </div>
 </div>
 
 <%= form_with url: root_path, method: :get, class: "mb-4" do |f| %>
@@ -8,23 +20,24 @@
     <div class="col-md-6">
       <%= f.text_field :search, value: @search_term,
           placeholder: "Search by title or description...",
-          class: "form-control" %>
+          class: "form-control form-control-lg" %>
     </div>
     <div class="col-md-3">
       <%= f.select :category_id,
           options_for_select([["All Categories", 0]] + @categories.map { |c| [c.name, c.id] }, @selected_category),
-          {}, { class: "form-select" } %>
+          {}, { class: "form-select form-select-lg" } %>
     </div>
     <div class="col-md-auto">
-      <%= f.submit "Search", class: "btn btn-success" %>
+      <%= f.submit "Search", class: "btn btn-success btn-lg" %>
       <% if @search_term.present? || @selected_category > 0 %>
-        <%= link_to "Clear", root_path, class: "btn btn-outline-secondary" %>
+        <%= link_to "Clear", root_path, class: "btn btn-outline-secondary btn-lg" %>
       <% end %>
     </div>
   </div>
 <% end %>
 
-<div class="d-flex gap-2 mb-3 flex-wrap">
+<div class="d-flex gap-2 mb-3 flex-wrap align-items-center">
+  <span class="text-muted" style="font-size:13px;">Browse:</span>
   <%= link_to "All Books", root_path,
       class: "btn btn-sm #{@active_filter.blank? && @selected_category == 0 ? 'btn-success' : 'btn-outline-success'}" %>
   <% @categories.each do |category| %>
@@ -33,31 +46,36 @@
   <% end %>
 </div>
 
-<div class="d-flex gap-2 mb-4 flex-wrap">
-  <%= link_to "🏷️ On Sale", root_path(filter: 'on_sale'),
+<div class="d-flex gap-2 mb-4 flex-wrap align-items-center">
+  <span class="text-muted" style="font-size:13px;">Filter:</span>
+  <%= link_to "🏷️ On Sale", root_path(filter: "on_sale"),
       class: "btn btn-sm #{@active_filter == 'on_sale' ? 'btn-danger' : 'btn-outline-danger'}" %>
-  <%= link_to "✨ New Arrivals", root_path(filter: 'new'),
+  <%= link_to "✨ New Arrivals", root_path(filter: "new"),
       class: "btn btn-sm #{@active_filter == 'new' ? 'btn-warning' : 'btn-outline-warning'}" %>
-  <%= link_to "🔄 Recently Updated", root_path(filter: 'recently_updated'),
+  <%= link_to "🔄 Recently Updated", root_path(filter: "recently_updated"),
       class: "btn btn-sm #{@active_filter == 'recently_updated' ? 'btn-info' : 'btn-outline-info'}" %>
 </div>
 
 <% if @search_term.present? %>
-  <p class="text-muted mb-3">
+  <div class="alert alert-info py-2">
     Found <strong><%= @products.total_count %></strong> result(s) for "<strong><%= @search_term %></strong>"
-  </p>
+    <% if @selected_category > 0 %>
+      in <strong><%= @categories.find { |c| c.id == @selected_category }&.name %></strong>
+    <% end %>
+  </div>
 <% end %>
 
 <% if @products.empty? %>
   <div class="text-center py-5 bg-white rounded border">
-    <p class="text-muted mb-3">No books found.</p>
+    <div style="font-size:64px;">🔍</div>
+    <p class="text-muted mb-3 fs-5">No books found.</p>
     <%= link_to "Browse all books", root_path, class: "btn btn-success" %>
   </div>
 <% else %>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     <% @products.each do |product| %>
       <div class="col">
-        <%= render 'product', product: product %>
+        <%= render "product", product: product %>
       </div>
     <% end %>
   </div>
