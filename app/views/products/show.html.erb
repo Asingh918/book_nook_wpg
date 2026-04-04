@@ -4,44 +4,112 @@
   { name: @product.title, path: product_path(@product) }
 ) %>
 
-<div class="card overflow-hidden mt-2">
-  <% if @product.image.attached? %>
-    <%= image_tag @product.large_image, style: "width:100%; max-height:400px; object-fit:cover;" %>
-  <% else %>
-    <div style="width:100%; height:250px; background:#2d6a4f; display:flex; align-items:center; justify-content:center;">
-      <div style="text-align:center; padding:20px;">
-        <div style="font-size:64px; margin-bottom:12px;">📚</div>
-        <h3 style="color:white; margin:0 0 8px;"><%= @product.title %></h3>
-        <p style="color:rgba(255,255,255,0.8); margin:0;">by <%= @product.author %></p>
-      </div>
-    </div>
-  <% end %>
+<div class="row g-4 mt-1">
+  <div class="col-md-4">
+    <% colors = ["#2d6a4f", "#1a5276", "#6c3483", "#784212", "#1a237e", "#b71c1c", "#004d40"] %>
+    <% color = colors[@product.id % colors.length] %>
 
-  <div class="p-4">
+    <% if @product.image.attached? %>
+      <%= image_tag @product.large_image, style: "width:100%; border-radius:12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);" %>
+    <% else %>
+      <div style="width:100%; height:350px; background:<%= color %>; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+        <div style="font-size:72px; margin-bottom:16px;">📚</div>
+        <h3 style="color:white; text-align:center; margin:0 0 8px; font-size:18px;"><%= @product.title %></h3>
+        <p style="color:rgba(255,255,255,0.8); text-align:center; margin:0; font-size:14px;">by <%= @product.author %></p>
+      </div>
+    <% end %>
+
+    <div class="card mt-3 p-3">
+      <h6 class="fw-bold mb-2">Book Details</h6>
+      <table class="table table-sm mb-0">
+        <tr>
+          <td class="text-muted" style="font-size:13px;">Author</td>
+          <td style="font-size:13px;"><%= @product.author %></td>
+        </tr>
+        <tr>
+          <td class="text-muted" style="font-size:13px;">Category</td>
+          <td style="font-size:13px;"><%= @product.category.name %></td>
+        </tr>
+        <tr>
+          <td class="text-muted" style="font-size:13px;">Price</td>
+          <td style="font-size:13px; color:#2d6a4f; font-weight:bold;">$<%= sprintf("%.2f", @product.price_cents / 100.0) %></td>
+        </tr>
+        <tr>
+          <td class="text-muted" style="font-size:13px;">Availability</td>
+          <td style="font-size:13px;">
+            <% if @product.stock_qty > 0 %>
+              <span class="text-success">✅ In Stock (<%= @product.stock_qty %> left)</span>
+            <% else %>
+              <span class="text-danger">❌ Out of Stock</span>
+            <% end %>
+          </td>
+        </tr>
+        <% if @product.tags.any? %>
+          <tr>
+            <td class="text-muted" style="font-size:13px;">Tags</td>
+            <td>
+              <% @product.tags.each do |tag| %>
+                <span class="badge bg-secondary" style="font-size:11px;"><%= tag.name %></span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-md-8">
     <div class="d-flex gap-2 mb-3 flex-wrap">
       <span class="category-badge"><%= @product.category.name %></span>
       <% if @product.on_sale? %>
         <span class="badge bg-danger">🏷️ On Sale</span>
       <% end %>
-      <% if @product.stock_qty > 0 %>
-        <span class="badge bg-success">In Stock (<%= @product.stock_qty %> left)</span>
-      <% else %>
-        <span class="badge bg-danger">Out of Stock</span>
-      <% end %>
-      <% @product.tags.each do |tag| %>
-        <span class="badge bg-secondary"><%= tag.name %></span>
+      <% if @product.created_at >= 3.days.ago %>
+        <span class="badge bg-warning text-dark">✨ New Arrival</span>
       <% end %>
     </div>
 
-    <h1 style="color:#1a1a1a;" class="mb-1 fs-3"><%= @product.title %></h1>
-    <p class="text-muted fs-5 mb-3">by <%= @product.author %></p>
-    <p style="line-height:1.8;" class="mb-4"><%= @product.description %></p>
+    <h1 style="color:#1a1a1a; font-size:28px;" class="mb-1"><%= @product.title %></h1>
+    <p class="text-muted fs-5 mb-4">by <strong><%= @product.author %></strong></p>
 
-    <div class="d-flex align-items-center gap-3">
-      <span class="price-tag fs-2">$<%= sprintf('%.2f', @product.price_cents / 100.0) %></span>
-      <%= button_to "🛒 Add to Cart", cart_add_path(product_id: @product.id),
-          method: :post,
-          class: "btn btn-success btn-lg" %>
+    <div style="background:#f8f9fa; border-left:4px solid #2d6a4f; padding:16px; border-radius:0 8px 8px 0; margin-bottom:24px;">
+      <h6 class="fw-bold mb-2" style="color:#2d6a4f;">About this book</h6>
+      <p style="line-height:1.8; margin:0; color:#333;"><%= @product.description %></p>
+    </div>
+
+    <div class="card p-4" style="border:2px solid #2d6a4f;">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+          <p class="text-muted mb-1" style="font-size:13px;">Price</p>
+          <span style="font-size:36px; font-weight:bold; color:#2d6a4f;">
+            $<%= sprintf("%.2f", @product.price_cents / 100.0) %>
+          </span>
+          <% if @product.on_sale? %>
+            <span class="badge bg-danger ms-2">ON SALE</span>
+          <% end %>
+        </div>
+        <div>
+          <% if @product.stock_qty > 0 %>
+            <%= button_to "🛒 Add to Cart", cart_add_path(product_id: @product.id),
+                method: :post,
+                class: "btn btn-success btn-lg px-4" %>
+          <% else %>
+            <button class="btn btn-secondary btn-lg px-4" disabled>Out of Stock</button>
+          <% end %>
+        </div>
+      </div>
+
+      <% if @product.stock_qty <= 5 && @product.stock_qty > 0 %>
+        <div class="alert alert-warning mt-3 mb-0 py-2">
+          ⚠️ Only <strong><%= @product.stock_qty %></strong> copies left — order soon!
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-4">
+      <%= link_to "← Back to Books", root_path, style: "color:#2d6a4f; text-decoration:none;" %>
+      <span class="text-muted mx-2">|</span>
+      <%= link_to "Browse #{@product.category.name}", category_path(@product.category), style: "color:#2d6a4f; text-decoration:none;" %>
     </div>
   </div>
 </div>
