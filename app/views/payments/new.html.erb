@@ -1,0 +1,94 @@
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <h1 style="color:#2d6a4f;" class="mb-4">Complete Payment</h1>
+
+    <div class="card p-4 mb-4">
+      <h5 class="fw-bold mb-3">Order Summary</h5>
+      <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Subtotal</span>
+        <span>$<%= sprintf("%.2f", @order.subtotal_cents / 100.0) %></span>
+      </div>
+      <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Tax</span>
+        <span>$<%= sprintf("%.2f", @order.tax_cents / 100.0) %></span>
+      </div>
+      <hr>
+      <div class="d-flex justify-content-between fw-bold fs-5">
+        <span>Total</span>
+        <span style="color:#2d6a4f;">$<%= sprintf("%.2f", @order.total_cents / 100.0) %></span>
+      </div>
+    </div>
+
+    <div class="card p-4">
+      <h5 class="fw-bold mb-3">💳 Card Details</h5>
+      <div class="alert alert-info">
+        <strong>Test Mode:</strong> Use card <code>4242 4242 4242 4242</code>, any future date, any CVC.
+      </div>
+
+      <%= form_with url: payments_path, method: :post, id: "payment-form" do |f| %>
+        <%= f.hidden_field :order_id, value: @order.id %>
+
+        <div class="mb-3">
+          <label class="form-label">Card Information</label>
+          <div id="card-element" style="padding:12px; border:1px solid #ddd; border-radius:6px; background:white;"></div>
+          <div id="card-errors" class="text-danger mt-2" style="font-size:13px;"></div>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 py-2 fs-5" id="submit-button">
+          🔒 Pay $<%= sprintf("%.2f", @order.total_cents / 100.0) %>
+        </button>
+      <% end %>
+    </div>
+
+    <p class="text-center text-muted mt-3" style="font-size:12px;">
+      🔒 Secured by Stripe — your card details are never stored on our servers
+    </p>
+  </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  const stripe = Stripe("<%= @publishable_key %>");
+  const elements = stripe.elements();
+  const cardElement = elements.create("card", {
+    style: {
+      base: {
+        fontSize: "16px",
+        color: "#424770",
+        fontFamily: "Arial, sans-serif",
+        "::placeholder": { color: "#aab7c4" }
+      },
+      invalid: { color: "#dc3545" }
+    }
+  });
+  cardElement.mount("#card-element");
+
+  cardElement.on("change", function(event) {
+    document.getElementById("card-errors").textContent = event.error ? event.error.message : "";
+  });
+
+  document.getElementById("payment-form").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const button = document.getElementById("submit-button");
+    button.disabled = true;
+    button.textContent = "Processing...";
+
+    const {paymentMethod, error} = await stripe.createPaymentMethod({
+      type: "card",
+      card: cardElement,
+    });
+
+    if (error) {
+      document.getElementById("card-errors").textContent = error.message;
+      button.disabled = false;
+      button.textContent = "🔒 Pay $<%= sprintf('%.2f', @order.total_cents / 100.0) %>";
+    } else {
+      const input = document.createElement("input");
+      input.setAttribute("type", "hidden");
+      input.setAttribute("name", "payment_method_id");
+      input.setAttribute("value", paymentMethod.id);
+      this.appendChild(input);
+      this.submit();
+    }
+  });
+</script>

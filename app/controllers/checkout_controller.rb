@@ -44,7 +44,7 @@ class CheckoutController < ApplicationController
         )
       end
       session[:cart] = {}
-      redirect_to order_confirmation_path(order), notice: "Order placed successfully!"
+      redirect_to new_payment_path(order_id: order.id), notice: "Order created! Please complete payment."
     else
       @provinces = Province.all.order(:name)
       render :new

@@ -26,5 +26,9 @@ Rails.application.routes.draw do
   get  "/checkout",          to: "checkout#new",           as: "checkout"
   get  "/checkout/province", to: "checkout#update_province", as: "checkout_province"
   post "/checkout",          to: "checkout#create",        as: "checkout_create"
+
+  get  "/payments/new",      to: "payments#new",           as: "new_payment"
+  post "/payments",          to: "payments#create",        as: "payments"
+
   get  "/orders/:id/confirmation", to: "orders#confirmation", as: "order_confirmation"
 end
