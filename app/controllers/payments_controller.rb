@@ -3,7 +3,7 @@ class PaymentsController < ApplicationController
 
   def new
     @order = Order.find(params[:order_id])
-    @publishable_key = Rails.application.credentials.stripe[:publishable_key]
+    @publishable_key = Rails.application.credentials.dig(:stripe, :publishable_key)
   end
 
   def create
