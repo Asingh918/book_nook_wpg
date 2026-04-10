@@ -37,3 +37,4 @@ end
 gem "kaminari"
 gem "bootstrap", "~> 5.3"
 gem "jquery-rails"
+gem "stripe"
