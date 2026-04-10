@@ -21,9 +21,6 @@
 
     <div class="card p-4">
       <h5 class="fw-bold mb-3">💳 Card Details</h5>
-      <div class="alert alert-info">
-        <strong>Test Mode:</strong> Use card <code>4242 4242 4242 4242</code>, any future date, any CVC.
-      </div>
 
       <%= form_with url: payments_path, method: :post, id: "payment-form" do |f| %>
         <%= f.hidden_field :order_id, value: @order.id %>
