@@ -1,6 +1,6 @@
 <h1 style="color:#2d6a4f;" class="mb-4">Checkout</h1>
 
-<%= form_with url: checkout_create_path, method: :post do |f| %>
+<%= form_with url: checkout_create_path, method: :post, data: { turbo: false } do |f| %>
   <div class="row g-4">
     <div class="col-lg-7">
       <div class="card p-4 mb-4">
@@ -8,34 +8,30 @@
 
         <div class="mb-3">
           <label class="form-label">Street Address</label>
-          <%= f.text_field :street,
-              value: current_user.street,
-              placeholder: "123 Main St",
-              class: "form-control" %>
+          <%= f.text_field :street, value: current_user.street,
+              placeholder: "123 Main St", class: "form-control" %>
         </div>
 
         <div class="row g-3 mb-3">
           <div class="col">
             <label class="form-label">City</label>
-            <%= f.text_field :city,
-                value: current_user.city,
-                placeholder: "Winnipeg",
-                class: "form-control" %>
+            <%= f.text_field :city, value: current_user.city,
+                placeholder: "Winnipeg", class: "form-control" %>
           </div>
           <div class="col">
             <label class="form-label">Postal Code</label>
-            <%= f.text_field :postal_code,
-                value: current_user.postal_code,
-                placeholder: "R3C 1A1",
-                class: "form-control" %>
+            <%= f.text_field :postal_code, value: current_user.postal_code,
+                placeholder: "R3C 1A1", class: "form-control" %>
           </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Province</label>
-          <select class="form-select" id="province_select" onchange="window.location='/checkout/province?province_id=' + this.value">
+          <select class="form-select" id="province_select"
+            onchange="window.location='/checkout/province?province_id=' + this.value">
             <% @provinces.each do |province| %>
-              <option value="<%= province.id %>" <%= 'selected' if @province&.id == province.id %>>
+              <option value="<%= province.id %>"
+                <%= "selected" if @province&.id == province.id %>>
                 <%= province.name %>
               </option>
             <% end %>
@@ -54,33 +50,33 @@
               <p class="mb-0 fw-bold" style="font-size:14px;"><%= item[:product].title %></p>
               <small class="text-muted">Qty: <%= item[:quantity] %></small>
             </div>
-            <span style="font-size:14px;">$<%= sprintf('%.2f', item[:product].price_cents * item[:quantity] / 100.0) %></span>
+            <span style="font-size:14px;">$<%= sprintf("%.2f", item[:product].price_cents * item[:quantity] / 100.0) %></span>
           </div>
         <% end %>
 
         <% if @subtotal %>
           <div class="d-flex justify-content-between mt-3 mb-2">
             <span class="text-muted">Subtotal</span>
-            <span>$<%= sprintf('%.2f', @subtotal / 100.0) %></span>
+            <span>$<%= sprintf("%.2f", @subtotal / 100.0) %></span>
           </div>
 
           <% if @province %>
             <% if @province.hst > 0 %>
               <div class="d-flex justify-content-between mb-2">
                 <span class="text-muted">HST (<%= (@province.hst * 100).round(1) %>%)</span>
-                <span>$<%= sprintf('%.2f', @tax / 100.0) %></span>
+                <span>$<%= sprintf("%.2f", @tax / 100.0) %></span>
               </div>
             <% else %>
               <% if @province.gst > 0 %>
                 <div class="d-flex justify-content-between mb-2">
                   <span class="text-muted">GST (<%= (@province.gst * 100).round(1) %>%)</span>
-                  <span>$<%= sprintf('%.2f', (@subtotal * @province.gst).round / 100.0) %></span>
+                  <span>$<%= sprintf("%.2f", (@subtotal * @province.gst).round / 100.0) %></span>
                 </div>
               <% end %>
               <% if @province.pst > 0 %>
                 <div class="d-flex justify-content-between mb-2">
                   <span class="text-muted">PST (<%= (@province.pst * 100).round(1) %>%)</span>
-                  <span>$<%= sprintf('%.2f', (@subtotal * @province.pst).round / 100.0) %></span>
+                  <span>$<%= sprintf("%.2f", (@subtotal * @province.pst).round / 100.0) %></span>
                 </div>
               <% end %>
             <% end %>
@@ -89,7 +85,7 @@
           <hr>
           <div class="d-flex justify-content-between fw-bold fs-5">
             <span>Total</span>
-            <span style="color:#2d6a4f;">$<%= sprintf('%.2f', @total / 100.0) %></span>
+            <span style="color:#2d6a4f;">$<%= sprintf("%.2f", @total / 100.0) %></span>
           </div>
         <% end %>
 
